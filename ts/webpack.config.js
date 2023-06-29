@@ -15,7 +15,7 @@ export default {
   target: 'web',
   mode: 'production',
   entry: {
-    barretenberg_wasm: './src/barretenberg_wasm/browser/worker.ts',
+    halo2_wasm: './src/halo2_wasm/browser/worker.ts',
     simple_test: './src/examples/simple.rawtest.ts',
   },
   module: {
@@ -38,12 +38,8 @@ export default {
       patterns: [
         {
           // Point directly to the built file, not the symlink, else copy-on-change doesn't work...
-          from: `../cpp/build-wasm/bin/barretenberg.wasm`,
-          to: 'barretenberg.wasm',
-        },
-        {
-          from: `../cpp/build-wasm-threads/bin/barretenberg.wasm`,
-          to: 'barretenberg-threads.wasm',
+          from: `src/halo2.wasm`,
+          to: 'halo2.wasm',
         },
       ],
     }),

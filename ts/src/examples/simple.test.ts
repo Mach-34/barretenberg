@@ -1,12 +1,12 @@
 import { Crs } from '../index.js';
-import { BarretenbergApiAsync, newBarretenbergApiAsync } from '../factory/index.js';
+import { Halo2ApiAsync, newHalo2ApiAsync } from '../factory/index.js';
 import { RawBuffer } from '../types/index.js';
 
 describe('simple', () => {
-  let api: BarretenbergApiAsync;
+  let api: Halo2ApiAsync;
 
   beforeAll(async () => {
-    api = await newBarretenbergApiAsync();
+    api = await newHalo2ApiAsync();
 
     // Important to init slab allocator as first thing, to ensure maximum memory efficiency.
     const CIRCUIT_SIZE = 2 ** 19;

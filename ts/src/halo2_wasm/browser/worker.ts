@@ -1,5 +1,5 @@
 import { expose } from 'comlink';
-import { BarretenbergWasm } from '../index.s';
+import { Halo2Wasm } from '../index.js';
 import debug from 'debug';
 
 self.onmessage = function (e) {
@@ -8,6 +8,6 @@ self.onmessage = function (e) {
   }
 };
 
-expose(new BarretenbergWasm());
+expose(new Halo2Wasm());
 
 self.postMessage({ ready: true });

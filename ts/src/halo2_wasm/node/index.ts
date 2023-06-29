@@ -18,7 +18,7 @@ export function createWorker() {
   return new Worker(__dirname + `/worker.js`);
 }
 
-export function getRemoteBarretenbergWasm(worker: Worker): Halo2WasmWorker {
+export function getRemoteHalo2Wasm(worker: Worker): Halo2WasmWorker {
   return wrap<Halo2Wasm>(nodeEndpoint(worker)) as Halo2WasmWorker;
 }
 

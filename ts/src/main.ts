@@ -1,5 +1,5 @@
 #!/usr/bin/env -S node --no-warnings
-import { Crs, BarretenbergApiAsync, newBarretenbergApiAsync, RawBuffer } from './index.js';
+import { Crs, Halo2ApiAsync, newHalo2ApiAsync, RawBuffer } from './index.js';
 import createDebug from 'debug';
 import { readFileSync, writeFileSync } from 'fs';
 import { gunzipSync } from 'zlib';
@@ -25,7 +25,7 @@ function getBytecode(jsonPath: string) {
   return decompressed;
 }
 
-async function getGates(jsonPath: string, api: BarretenbergApiAsync) {
+async function getGates(jsonPath: string, api: Halo2ApiAsync) {
   const parsed = getJsonData(jsonPath);
   if (parsed.gates) {
     return +parsed.gates;
@@ -42,7 +42,7 @@ function getWitness(witnessPath: string) {
   return Buffer.concat([numToUInt32BE(data.length / 32), data]);
 }
 
-async function computeCircuitSize(jsonPath: string, api: BarretenbergApiAsync) {
+async function computeCircuitSize(jsonPath: string, api: Halo2ApiAsync) {
   debug(`computing circuit size...`);
   const bytecode = getBytecode(jsonPath);
   const [exact, total, subgroup] = await api.acirGetCircuitSizes(new RawBuffer(bytecode));
@@ -50,7 +50,7 @@ async function computeCircuitSize(jsonPath: string, api: BarretenbergApiAsync) {
 }
 
 async function init(jsonPath: string) {
-  const api = await newBarretenbergApiAsync();
+  const api = await newHalo2ApiAsync();
 
   const circuitSize = await getGates(jsonPath, api);
   const subgroupSize = Math.pow(2, Math.ceil(Math.log2(circuitSize)));
@@ -76,7 +76,7 @@ async function init(jsonPath: string) {
 }
 
 async function initLite() {
-  const api = await newBarretenbergApiAsync(1);
+  const api = await newHalo2ApiAsync(1);
 
   // Plus 1 needed! (Move +1 into Crs?)
   const crs = await Crs.new(1);
@@ -122,7 +122,7 @@ export async function prove(jsonPath: string, witnessPath: string, isRecursive: 
 }
 
 export async function gateCount(jsonPath: string) {
-  const api = await newBarretenbergApiAsync(1);
+  const api = await newHalo2ApiAsync(1);
   try {
     console.log(`gates: ${await getGates(jsonPath, api)}`);
   } finally {
